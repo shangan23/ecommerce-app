@@ -1,4 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+interface AppState {
+  auth: object;
+}
 
 @Component({
   selector: 'app-header',
@@ -8,7 +14,12 @@ import { Component, OnInit, Input } from '@angular/core';
 export class HeaderComponent implements OnInit {
   @Input()
   appTitle: string;
-  constructor() {}
+  authInfo: Observable<object>;
+  isLoggedIn: Observable<boolean>;
+  constructor(private store: Store<AppState>) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.authInfo = this.store.select('auth');
+    this.authInfo.subscribe(data => (this.isLoggedIn = data['isLoggedIn']));
+  }
 }

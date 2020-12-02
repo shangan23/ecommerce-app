@@ -4,21 +4,30 @@ export type Action = AuthActions.All;
 
 export const initalState = {
   loading: true,
-  details: {}
+  details: {},
+  isLoggedIn: false
 };
 
-export const newState = (state, newData) => {
+export const newState = (state, newData) => { 
   return Object.assign({}, state, newData);
 };
 
 function AuthReducer(state = initalState, action: Action) {
   switch (action.type) {
-    case AuthActions.LOGIN_FETCH:
+    case AuthActions.LOGIN_INIT:
       return newState(state, { loading: true });
     case AuthActions.LOGIN_SUCCESS:
-      return newState(state, { loading: false, details: action.payload });
+      return newState(state, {
+        loading: false,
+        details: action.payload,
+        isLoggedIn: action.isLoggedIn
+      });
     case AuthActions.LOGIN_FAILURE:
-      return newState(state, { loading: false });
+      return newState(state, {
+        loading: false,
+        details: action.payload,
+        isLoggedIn: action.isLoggedIn
+      });
     default:
       return state;
   }

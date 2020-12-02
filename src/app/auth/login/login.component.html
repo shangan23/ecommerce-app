@@ -3,8 +3,7 @@
   <div class="row">
     <div class="col-md-4 offset-md-4">
       <div *ngIf="auth | async as authenticate">
-        {{authenticate.loading}}
-        {{authenticate.details | json}}
+        <div *ngIf="authenticate.loading">authenticating...</div>
       </div>
       <form [formGroup]="loginForm" (ngSubmit)="authenticate()">
         <div class="form-group">

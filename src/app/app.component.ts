@@ -1,11 +1,5 @@
 import { Component } from '@angular/core';
-import {
-  Router,
-  Event,
-  NavigationStart,
-  NavigationError,
-  NavigationEnd
-} from '@angular/router';
+import { RouterMiddlewareService } from './router-middleware.service';
 
 @Component({
   selector: 'app-root',
@@ -13,25 +7,9 @@ import {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Ecommerce App';
+  title = 'Ecommerce Backoffice';
 
-  constructor(private router: Router) {
-    //Router subscriber
-    this.router.events.subscribe((event: Event) => {
-      if (event instanceof NavigationStart) {
-        //do something on start activity
-        console.info('NavigationStart', event);
-      }
-
-      if (event instanceof NavigationError) {
-        // Handle error
-        console.error(event.error);
-      }
-
-      if (event instanceof NavigationEnd) {
-        //do something on end activity
-        console.info('NavigationEnd', event);
-      }
-    });
+  constructor(private routerMiddleware: RouterMiddlewareService) {
+    this.routerMiddleware.navEvent();
   }
 }

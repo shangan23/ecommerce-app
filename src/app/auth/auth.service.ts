@@ -5,12 +5,23 @@ import { appConfig } from '../../config';
 import { catchError } from 'rxjs/operators';
 import { ConfigService } from '../config.service';
 import jwt_decode from 'jwt-decode';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import * as AuthAction from 'src/store/actions/auth.action';
 
+interface AppState {
+  auth: object;
+}
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient, private errorService: ConfigService) {}
+  constructor(
+    private http: HttpClient,
+    private errorService: ConfigService,
+    private router: Router,
+    private store: Store<AppState>
+  ) {}
 
   authenticate(userName, password): Observable<object> {
     console.log(userName, password);
@@ -33,5 +44,7 @@ export class AuthService {
 
   logOut() {
     localStorage.clear();
+    this.store.dispatch(new AuthAction.Logout());
+    this.router.navigate(['/login']);
   }
 }
